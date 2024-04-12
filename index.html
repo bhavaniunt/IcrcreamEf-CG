@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ice Cream Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    header {
+      background-color: #4CAF50;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+    }
+    nav {
+      background-color: #333;
+      overflow: hidden;
+    }
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    .content {
+      padding: 20px;
+    }
+    .footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+    }
+    .product {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin: 10px;
+      background-color: #fff;
+    }
+    .product img {
+      width: 100%;
+      border-radius: 5px;
+    }
+    .product h2 {
+      color: #4CAF50;
+    }
+    .product p {
+      margin-top: 10px;
+    }
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .cart-container {
+      position: fixed;
+      top: 60px;
+      right: 10px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .cart-item {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Ice Cream Store
+</header>
+
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Contact</a>
+  <button class="btn" onclick="showCart()" aria-label="Cart">
+    Cart 
+    <span id="cartItemCount">0</span>
+  </button>
+  <input type="text" id="searchInput" placeholder="Search..." aria-label="Search">
+  <button class="btn" onclick="search()" aria-label="Search">Search</button>
+</nav>
+
+<div class="content">
+  <div class="product">
+    <img src="icecream1.jpg" alt="Ice Cream Flavor 1">
+    <h2>Vanilla Ice Cream</h2>
+    <p>Description: A classic creamy vanilla flavor.</p>
+    <p>Price: $2.99</p>
+    <button class="btn" onclick="addToCart('Vanilla Ice Cream', 2.99)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <img src="icecream2.jpg" alt="Ice Cream Flavor 2">
+    <h2>Chocolate Ice Cream</h2>
+    <p>Description: Rich and creamy chocolate flavor.</p>
+    <p>Price: $3.49</p>
+    <button class="btn" onclick="addToCart('Chocolate Ice Cream', 3.49)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <img src="icecream3.jpg" alt="Ice Cream Flavor 3">
+    <h2>Strawberry Ice Cream</h2>
+    <p>Description: Sweet and fruity strawberry flavor.</p>
+    <p>Price: $3.99</p>
+    <button class="btn" onclick="addToCart('Strawberry Ice Cream', 3.99)">Add to Cart</button>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2024 Ice Cream Store
+</div>
+
+<div class="cart-container" id="cartContainer" style="display: none;">
+  <h3>Shopping Cart</h3>
+  <div id="cartItems"></div>
+  <p>Total: <span id="cartTotal">$0.00</span></p>
+  <button class="btn" onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+  let cartItems = [];
+  
+  function addToCart(itemName, itemPrice) {
+    cartItems.push({ name: itemName, price: itemPrice });
+    updateCartCount();
+    updateCartTotal();
+  }
+  
+  function updateCartCount() {
+    document.getElementById('cartItemCount').textContent = cartItems.length;
+  }
+  
+  function updateCartTotal() {
+    const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+  }
+  
+  function showCart() {
+    const cartContainer = document.getElementById('cartContainer');
+    const cartItemsElement = document.getElementById('cartItems');
+    
+    cartItemsElement.innerHTML = '';
+    
+    if (cartItems.length === 0) {
+      cartItemsElement.textContent = 'Your cart is empty.';
+    } else {
+      cartItems.forEach(item => {
+        const cartItemElement = document.createElement('div');
+        cartItemElement.classList.add('cart-item');
+        cartItemElement.textContent = `${item.name} - $${item.price}`;
+        cartItemsElement.appendChild(cartItemElement);
+      });
+    }
+    
+    cartContainer.style.display = 'block';
+  }
+  
+  function checkout() {
+    const paymentMethod = prompt("Would you like to use debit or credit card?");
+    if (paymentMethod) {
+      alert(`Thank you for your purchase using ${paymentMethod}!`);
+      cartItems = [];
+      updateCartCount();
+      updateCartTotal();
+      document.getElementById('cartContainer').style.display = 'none';
+    }
+  }
+
+  function search() {
+    const searchTerm = document.getElementById('searchInput').value;
+    // Implement your search logic here
+    console.log('Searching for:', searchTerm);
+  }
+</script>
+
+</body>
+</html>
